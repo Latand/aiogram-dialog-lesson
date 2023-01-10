@@ -1,0 +1,4 @@
+aiogram~=2.18
+aioredis<2.0
+environs~=9.0
+aiogram-dialog~=1.0
