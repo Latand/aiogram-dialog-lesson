@@ -84,7 +84,7 @@ async def fake_db_buy_product(session, product_id, amount) -> bool:
 
 
 async def get_categories(dialog_manager: DialogManager, **middleware_data):
-    session = None  # TODO: get session from middleware
+    session = middleware_data.get('session')
     db_categories = await fake_db_get_categories(session)
 
     data = {
@@ -99,7 +99,7 @@ async def get_categories(dialog_manager: DialogManager, **middleware_data):
 
 
 async def get_products(dialog_manager: DialogManager, **middleware_data):
-    session = None  # TODO: get session from middleware
+    session = middleware_data.get('session')
     category_id = int(dialog_manager.current_context().dialog_data['category_id'])
     db_products = await fake_db_get_products(session, category_id)
 
@@ -115,7 +115,7 @@ async def get_products(dialog_manager: DialogManager, **middleware_data):
 
 
 async def get_product_info(dialog_manager: DialogManager, **middleware_data):
-    session = None  # TODO: get session from middleware
+    session = middleware_data.get('session')
     product_id = int(dialog_manager.current_context().dialog_data['product_id'])
     db_product = await fake_db_get_product(session, product_id)
 
@@ -130,7 +130,7 @@ In Stock: {db_product["stock"]} pcs''',
 
 
 async def get_amount(dialog_manager: DialogManager, **middleware_data):
-    session = None  # TODO: get session from middleware
+    session = middleware_data.get('session')
     product_id = int(dialog_manager.current_context().start_data['product_id'])
     db_product = await fake_db_get_product(session, product_id)
 
@@ -143,7 +143,7 @@ In Stock: {db_product["stock"]} pcs''',
 
 
 async def get_confirm(dialog_manager: DialogManager, **middleware_data):
-    session = None  # TODO: get session from middleware
+    session = middleware_data.get('session')
     product_id = int(dialog_manager.current_context().start_data['product_id'])
     db_product = await fake_db_get_product(session, product_id)
 
