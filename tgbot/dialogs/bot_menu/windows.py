@@ -13,7 +13,7 @@ from ...misc.constants import SwitchToWindow
 
 def categories_window():
     return Window(
-        Const('Choose categories that you`re interested in'),
+        Const('Choose Category that you`re interested in'),
         keyboards.paginated_categories(selected.on_chosen_category),
         Cancel(Const('Exit')),
         state=BotMenu.select_categories,
@@ -23,7 +23,7 @@ def categories_window():
 
 def products_window():
     return Window(
-        Const('Choose product that you`re interested in'),
+        Const('Choose Product that you`re interested in'),
         keyboards.paginated_products(selected.on_chosen_product),
         Back(Const('<< Choose another Product')),
         state=BotMenu.select_products,
