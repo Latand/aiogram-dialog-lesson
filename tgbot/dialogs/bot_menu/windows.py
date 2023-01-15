@@ -25,7 +25,7 @@ def products_window():
     return Window(
         Const('Choose product that you`re interested in'),
         keyboards.paginated_products(selected.on_chosen_product),
-        Back(Const('<< Choose another select_products')),
+        Back(Const('<< Choose another Product')),
         state=BotMenu.select_products,
         getter=getters.get_products
     )

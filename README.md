@@ -16,7 +16,7 @@ from aiogram_dialog.widgets.text import Format, Const
 
 dialog = Dialog(
     Window(
-        Const('Choose select_products that you`re interested in'),
+        Const('Choose Category that you`re interested in'),
         keyboards.paginated_categories(selected.on_chosen_category),
         Cancel(Const('Exit')),
         state=BotMenu.select_categories,
@@ -142,7 +142,7 @@ from .states import BotMenu, BuyProduct
 
 def categories_window():
     return Window(
-        Const('Choose select_products that you`re interested in'),
+        Const('Choose Category that you`re interested in'),
         keyboards.paginated_categories(selected.on_chosen_category),
         Cancel(Const('Exit')),
         state=BotMenu.select_categories,
