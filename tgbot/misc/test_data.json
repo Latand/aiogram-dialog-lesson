@@ -1,0 +1,291 @@
+{
+  "categories": [
+    {
+      "name": "Fruits",
+      "category_id": 1,
+      "items": []
+    },
+    {
+      "name": "Vegetables",
+      "category_id": 2,
+      "items": []
+    },
+    {
+      "name": "Dairy",
+      "category_id": 3,
+      "items": []
+    },
+    {
+      "name": "Bakery",
+      "category_id": 4,
+      "items": []
+    },
+    {
+      "name": "Meats",
+      "category_id": 5,
+      "items": []
+    },
+    {
+      "name": "Seafood",
+      "category_id": 6,
+      "items": []
+    },
+    {
+      "name": "Spices",
+      "category_id": 7,
+      "items": []
+    },
+    {
+      "name": "Canned Goods",
+      "category_id": 8,
+      "items": []
+    }
+  ],
+  "products": [
+    {
+      "name": "Apple 🍎",
+      "product_id": 1,
+      "price": 1.5,
+      "stock": 10,
+      "category_name": "Fruits"
+    },
+    {
+      "name": "Orange 🍊",
+      "product_id": 2,
+      "price": 1.5,
+      "stock": 10,
+      "category_name": "Fruits"
+    },
+    {
+      "name": "Banana 🍌",
+      "product_id": 3,
+      "price": 1.5,
+      "stock": 10,
+      "category_name": "Fruits"
+    },
+    {
+      "name": "Tomato 🍅",
+      "product_id": 4,
+      "price": 1.5,
+      "stock": 10,
+      "category_name": "Vegetables"
+    },
+    {
+      "name": "Potato 🥔",
+      "product_id": 5,
+      "price": 1.5,
+      "stock": 10,
+      "category_name": "Vegetables"
+    },
+    {
+      "name": "Carrot 🥕",
+      "product_id": 6,
+      "price": 1.5,
+      "stock": 10,
+      "category_name": "Vegetables"
+    },
+    {
+      "name": "Milk 🥛",
+      "product_id": 7,
+      "price": 2.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Cheese 🧀",
+      "product_id": 8,
+      "price": 4.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Butter 🧈",
+      "product_id": 9,
+      "price": 2.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Cream 🥛",
+      "product_id": 10,
+      "price": 3.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Ice Cream 🍨",
+      "product_id": 11,
+      "price": 4.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Whipping Cream 🥛",
+      "product_id": 12,
+      "price": 5.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Sour Cream 🥛",
+      "product_id": 13,
+      "price": 4.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Half & Half 🥛",
+      "product_id": 14,
+      "price": 2.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Heavy Cream 🥛",
+      "product_id": 15,
+      "price": 3.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Goat Cheese 🧀",
+      "product_id": 16,
+      "price": 4.5,
+      "stock": 10,
+      "category_name": "Dairy"
+    },
+    {
+      "name": "Bread 🍞",
+      "product_id": 17,
+      "price": 2.5,
+      "stock": 10,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Cake 🍰",
+      "product_id": 18,
+      "price": 5.5,
+      "stock": 10,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Donut 🍩",
+      "product_id": 19,
+      "price": 2.0,
+      "stock": 20,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Muffin 🧁",
+      "product_id": 20,
+      "price": 1.5,
+      "stock": 30,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Pie 🥧",
+      "product_id": 21,
+      "price": 3.5,
+      "stock": 10,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Cupcake 🧁",
+      "product_id": 22,
+      "price": 2.0,
+      "stock": 50,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Croissant 🥐",
+      "product_id": 23,
+      "price": 4.0,
+      "stock": 20,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Danish 🥮",
+      "product_id": 24,
+      "price": 3.5,
+      "stock": 40,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Cheesecake 🍰",
+      "product_id": 25,
+      "price": 6.0,
+      "stock": 10,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Brownie 🍫",
+      "product_id": 26,
+      "price": 2.5,
+      "stock": 30,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Biscuit 🍪",
+      "product_id": 27,
+      "price": 1.0,
+      "stock": 60,
+      "category_name": "Bakery"
+    },
+    {
+      "name": "Beef 🥩",
+      "product_id": 28,
+      "price": 6.5,
+      "stock": 10,
+      "category_name": "Meats"
+    },
+    {
+      "name": "Chicken 🐔",
+      "product_id": 29,
+      "price": 4.5,
+      "stock": 10,
+      "category_name": "Meats"
+    },
+    {
+      "name": "Salmon 🐟",
+      "product_id": 30,
+      "price": 8.5,
+      "stock": 10,
+      "category_name": "Seafood"
+    },
+    {
+      "name": "Shrimp 🍤",
+      "product_id": 31,
+      "price": 7.5,
+      "stock": 10,
+      "category_name": "Seafood"
+    },
+    {
+      "name": "Cumin 🌶",
+      "product_id": 32,
+      "price": 1.5,
+      "stock": 10,
+      "category_name": "Spices"
+    },
+    {
+      "name": "Turmeric 🧨",
+      "product_id": 33,
+      "price": 1.5,
+      "stock": 10,
+      "category_name": "Spices"
+    },
+    {
+      "name": "Canned tomatoes 🍅",
+      "product_id": 34,
+      "price": 2.5,
+      "stock": 10,
+      "category_name": "Canned Goods"
+    },
+    {
+      "name": "Canned beans 🥫",
+      "product_id": 35,
+      "price": 3.5,
+      "stock": 10,
+      "category_name": "Canned Goods"
+    }
+  ]
+}

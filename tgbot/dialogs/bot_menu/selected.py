@@ -4,6 +4,7 @@ from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import DialogManager
 
 from tgbot.dialogs.bot_menu.states import BotMenu, BuyProduct
+from tgbot.misc.constants import SwitchToWindow
 from tgbot.services.repo import Repo
 
 
@@ -62,4 +63,4 @@ async def on_confirm_buy(c: CallbackQuery, widget: Any, manager: DialogManager):
     product = await repo.get_product(session, product_id)
 
     await c.message.answer(f'You bought {amount} {product.name}!')
-    await manager.done()
+    await manager.done(result={'switch_to_window': SwitchToWindow.SelectProducts})

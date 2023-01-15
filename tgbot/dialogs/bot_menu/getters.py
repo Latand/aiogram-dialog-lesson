@@ -1,5 +1,6 @@
 from aiogram_dialog import DialogManager
 
+from tgbot.dialogs.bot_menu.states import BotMenu
 from tgbot.services.repo import Repo
 
 
@@ -11,7 +12,7 @@ async def get_categories(dialog_manager: DialogManager, **middleware_data):
     data = {
         # 'categories': db_categories
         'categories': [
-            (category.name, category.category_id)
+            (f'{category.name} ({len(category.items)})', category.category_id)
             for category in db_categories
         ],
     }
@@ -20,7 +21,13 @@ async def get_categories(dialog_manager: DialogManager, **middleware_data):
 
 async def get_products(dialog_manager: DialogManager, **middleware_data):
     session = middleware_data.get('session')
-    category_id = int(dialog_manager.current_context().dialog_data['category_id'])
+    category_id = dialog_manager.current_context().dialog_data.get('category_id')
+    if not category_id:
+        await dialog_manager.event.answer('Choose a category first')
+        await dialog_manager.switch_to(BotMenu.select_categories)
+        return
+
+    category_id = int(category_id)
     repo: Repo = middleware_data.get('repo')
     db_products = await repo.get_products(session, category_id)
 

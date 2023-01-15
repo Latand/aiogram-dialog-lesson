@@ -27,18 +27,13 @@ class Category:
 class Repo:
     categories = []
 
-    def __init__(self):
+    def __init__(self, test_data: dict = None):
         # Add Fruits and Vegetables categories
-        self.test_add_category(Category('Fruits', 1, []))
-        self.test_add_category(Category('Vegetables', 2, []))
-        # Add products to Fruits category
-        self.test_add_product('Fruits', Product('Apple 🍎', 1, 1.5, 10))
-        self.test_add_product('Fruits', Product('Orange 🍊', 2, 1.5, 10))
-        self.test_add_product('Fruits', Product('Banana 🍌', 3, 1.5, 10))
-        # Add products to Vegetables category
-        self.test_add_product('Vegetables', Product('Tomato 🍅', 4, 1.5, 10))
-        self.test_add_product('Vegetables', Product('Potato 🥔', 5, 1.5, 10))
-        self.test_add_product('Vegetables', Product('Carrot 🥕', 6, 1.5, 10))
+        for category in test_data.get('categories'):
+            self.categories.append(Category(**category))
+        for product in test_data.get('products'):
+            category_name = product.pop('category_name')
+            self.test_add_product(category_name, Product(**product))
 
     def test_add_category(self, category: Category):
         self.categories.append(category)

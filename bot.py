@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 
 from aiogram import Bot, Dispatcher
@@ -40,7 +41,8 @@ async def main():
     dp = Dispatcher(bot, storage=storage)
 
     bot['config'] = config
-    repo = Repo()
+    with open('tgbot/misc/test_data.json', 'r') as f:
+        repo = Repo(test_data=json.load(f))
 
     register_all_middlewares(dp, config, repo)
     register_all_filters(dp)
