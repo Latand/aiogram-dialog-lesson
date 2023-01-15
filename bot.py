@@ -10,12 +10,13 @@ from tgbot.dialogs import setup_dialogs
 from tgbot.filters.admin import AdminFilter
 from tgbot.handlers.user import register_user
 from tgbot.middlewares.environment import EnvironmentMiddleware
+from tgbot.services.repo import Repo
 
 logger = logging.getLogger(__name__)
 
 
-def register_all_middlewares(dp, config):
-    dp.setup_middleware(EnvironmentMiddleware(config=config))
+def register_all_middlewares(dp, config, repo):
+    dp.setup_middleware(EnvironmentMiddleware(config=config, repo=repo))
 
 
 def register_all_filters(dp):
@@ -39,8 +40,9 @@ async def main():
     dp = Dispatcher(bot, storage=storage)
 
     bot['config'] = config
+    repo = Repo()
 
-    register_all_middlewares(dp, config)
+    register_all_middlewares(dp, config, repo)
     register_all_filters(dp)
     register_all_handlers(dp)
     setup_dialogs(dp)

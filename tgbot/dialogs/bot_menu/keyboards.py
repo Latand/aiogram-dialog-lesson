@@ -23,9 +23,9 @@ def paginated_categories(on_click):
 def paginated_products(on_click):
     return ScrollingGroup(
         Select(
-            Format("{item[0]}"),
+            Format("{item.name}"),
             id="s_scroll_products",
-            item_id_getter=operator.itemgetter(1),
+            item_id_getter=operator.attrgetter("product_id"),
             items="products",
             on_click=on_click,
         ),
