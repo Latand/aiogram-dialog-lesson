@@ -149,6 +149,27 @@ def categories_window():
         getter=getters.get_categories
     )
 ```
+Here how it looks like in the bot:
+![img.png](img.png)
+
+You can see that to start dialog we used the /menu command. It is done in the `tgbot/handlers/user.py` file.
+
+```python
+from aiogram import Dispatcher
+from aiogram.types import Message
+from aiogram_dialog import DialogManager
+
+from tgbot.dialogs.bot_menu.states import BotMenu
+
+
+async def command_menu(message: Message, dialog_manager: DialogManager):
+    await dialog_manager.start(BotMenu.select_categories)
+
+
+def register_user(dp: Dispatcher):
+    dp.register_message_handler(command_menu, commands=["menu"], state="*")
+
+```
 
 ### Keyboard: `dialogs/bot_menu/keyboards.py`
 
