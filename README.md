@@ -27,6 +27,18 @@ dialog = Dialog(
 )
 ```
 
+Here:
+
+- `Window` is a dialog window. It is a widget that contains other widgets.
+- `TextInput` is a widget that allows you to enter text. You stay in the same window until you switch to another window
+  explicitly.
+- `Cancel` is a widget that allows you to cancel the dialog and close it.
+- `Back` is a widget that allows you to go back to the previous window.
+- `Button` is a widget that allows you to handle a button click.
+- `Format` is a widget that allows you to format text using the `format_map` method of 'str' type.
+- `Const` is a widget that allows you to output a constant string.
+- `state` is a state in which the dialog will be launched. Each window must have its own unique state with unique name.
+
 ### Registering a dialog
 
 ```python
@@ -252,6 +264,7 @@ async def on_chosen_category(c: CallbackQuery, widget: Any, manager: DialogManag
 ```
 
 Here:
+
 - `manager.current_context()` - returns the current context of the dialog. You can use it to get the data from the
   current dialog. Each dialog has its own context and data.
 - `ctx.dialog_data.update(category_id=item_id)` - updates the data in the context. You can use it to pass data to the
