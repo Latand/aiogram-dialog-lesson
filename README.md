@@ -1,210 +1,259 @@
-# tgbot_template
+# Lesson about aiogram-dialog
 
-<img height="30em" src="https://raw.githubusercontent.com/anki-geo/ultimate-geography/a44a569a922e1d241517113e2917736af808eed7/src/media/flags/ug-flag-united_kingdom.svg" alt="english" align = "center"/>
-This template is recommended to use in your Telegram bots written on <a href='https://github.com/aiogram/aiogram'>AIOgram</a>.
-You can see tutorials on how to create, and use it on <a href='https://botfather.dev?utm_source=github_template'>Website with course on Telegram Bots Development</a>.
-<br/><br/><br/>
+This is a lesson about aiogram-dialog. It is a library for creating dialogs in aiogram.
+To create a dialog, you can create a package 'tgbot/dialogs' and store all your dialogs there.
 
+You can either separate or not separate your dialogs into different files. It is up to you.
+This is an example of how I believe it is convenient.
 
-<img height="30em" src="https://raw.githubusercontent.com/anki-geo/ultimate-geography/a44a569a922e1d241517113e2917736af808eed7/src/media/flags/ug-flag-ukraine.svg" alt="ukrainian" align = "center"/>
-Цей шаблон рекомендовано використовувати для створення ваших Telegram-ботів, написаних на <a href='https://github.com/aiogram/aiogram'>AIOgram</a>.
-Ви можете переглянути навчальні матеріали щодо створення та використання шаблону на <a href='https://botfather.dev?utm_source=github_template'>веб-сайті з курсом із розробки ботів Telegram</a>
-<br/><br/><br/>
+### Creating a dialog
 
+```python
+from aiogram_dialog import Dialog, Window
+from aiogram_dialog.widgets.input import TextInput
+from aiogram_dialog.widgets.kbd import Cancel, Back, Button
+from aiogram_dialog.widgets.text import Format, Const
 
-<img height="30em" src="https://raw.githubusercontent.com/anki-geo/ultimate-geography/a44a569a922e1d241517113e2917736af808eed7/src/media/flags/ug-flag-russia.svg" alt="russian" align = "center"/>
-Этот шаблон рекомендуется использовать для создания ваших Telegram-ботов, написанных на <a href='https://github.com/aiogram/aiogram'>AIOgram</a>.
-Учебные материалы по созданию и использованию шаблона можно найти на <a href='https://botfather.dev?utm_source=github_template'>веб-сайте с курсом по разработке ботов Telegram</a>
-
-## About the template
-
-**Structure:**
-
-```
-tgbot_template/
-├── bot.py
-├── tgbot/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── filters/
-│   ├── handlers/
-│   └── middlewares/
+dialog = Dialog(
+    Window(
+        Const('Choose select_products that you`re interested in'),
+        keyboards.paginated_categories(selected.on_chosen_category),
+        Cancel(Const('Exit')),
+        state=BotMenu.select_categories,
+        getter=getters.get_categories
+    ),
+    Window(...),
+    ...
+)
 ```
 
-- The `tgbot` package is the root package for the bot, and it contains sub-packages for **filters**, **handlers**,
-  and **middlewares**.
+### Registering a dialog
 
-- The `filters` package contains classes that define **custom filters** for the bot's message handlers.
+```python
+from aiogram import Dispatcher
+from aiogram_dialog import DialogRegistry
 
-- The `handlers` package contains classes that define the bot's **message handlers**, which specify the actions to take
-  in response to incoming messages.
 
-- The `middlewares` package contains classes that define **custom middlewares** for the bot's dispatcher, which can be
-  used to perform additional processing on incoming messages.
+def setup_dialogs(dp: Dispatcher):
+    registry = DialogRegistry(dp)
+    for dialog in [
+        dialog_1, dialog_2, ...
+    ]:
+        registry.register(dialog)  # register a dialog
+```
 
-## Detailed description
+### Packing windows/dialogs in functions
 
-### `bot.py`
+I find it very convenient to pack dialogs in functions.
+This allows you to not only group windows and dialogs in one function (if you need a lot of them),
+but you can also change the creation of the dialog with additional parameters if needed.
 
-The bot.py script is the entry point for the template Telegram bot. It performs the following steps to start and run the
-bot:
+### `dialogs/__init__.py`
 
-1. Set up logging: The `logging` module is imported and configured to log messages to the console.
-2. Load the configuration: The `load_config()` function from the `tgbot.config` module is called to read the configuration
-   from the environment.
-3. Set up the storage: Depending on the `use_redis` flag in the configuration, either a `MemoryStorage` or a `RedisStorage2`
-   instance is created to store the bot's state.
-4. Create the bot and the dispatcher: A `Bot` instance is created using the bot token from the configuration, and a
-   `Dispatcher` instance is created using the `Bot` instance and the storage.
-5. Register middlewares, filters, and handlers: The `register_all_middlewares()`, `register_all_filters()`, and
-   `register_all_handlers()` functions are called to register all the middlewares, filters, and handlers that are used by
-   the bot.
-6. Start the polling loop: The `start_polling()` method of the Dispatcher instance is called to start the main event loop
-   for the bot. This method listens for incoming messages and routes them to the appropriate handler.
+```python
+from aiogram import Dispatcher
+from aiogram_dialog import DialogRegistry
 
-### `tgbot/config.py`
+from . import bot_menu
 
-The `config.py` script defines a data structure for storing configuration options for the bot, such as the Telegram bot
-token, database credentials, and other parameters.
 
-The config.py script also includes a `load_config` function for loading the configuration from a file using
-the `environs` library.
+def setup_dialogs(dp: Dispatcher):
+    registry = DialogRegistry(dp)
+    for dialog in [
+        *bot_menu.bot_menu_dialogs(),
+    ]:
+        registry.register(dialog)  # register a dialog
+```
 
-The config.py file defines a `Config` class, which is used to store configuration settings for the bot.
+### `dialogs/bot_menu/__init__.py`
 
-The Config class has three nested classes, `TgBot`, `DbConfig`, and `Miscellaneous`, which are used to store
-configuration settings for the Telegram bot, the database, and miscellaneous settings, respectively.
+Here we have a function that creates group of dialogs called `bot_menu_dialogs`.
 
-The `load_config` function is used to load the configuration settings from an environment file and create a `Config`
-object.
+```python
+from aiogram_dialog import Dialog
 
-### `tgbot/filters/admin.py`
+from . import windows
 
-The `admin.py` file defines an `AdminFilter` class, which is used to filter messages so that only messages from
-authorized users **(i.e., users who are listed in the ADMINS configuration setting)** are processed by the bot.
 
-The `AdminFilter` class is a subclass of `BoundFilter` from the **aiogram** library, and it defines a key property that
-specifies the name of the filter. The `AdminFilter` class also defines an `__init__` method that takes a `is_admin`
-parameter, which specifies whether the user who sent the message is an authorized user.
+def bot_menu_dialogs():
+    return [
+        Dialog(
+            windows.categories_window(),
+            windows.products_window(),
+            windows.product_info_window(),
+        ),
+        Dialog(
+            windows.buy_product_window(),
+            windows.confirm_buy_window(),
+        ),
+    ]
+```
 
-The `AdminFilter` class also defines a `check` method that checks whether the user who sent the message is an admin
-user, and if so, it returns `True`, indicating that the message should be processed by the bot. Otherwise, it returns
-`False`, indicating that the message should be ignored by the bot. The `check` method is called by the bot's dispatcher
-when a message is received.
+### Dialogs structure
 
-### `tgbot/handlers/admin.py`
+I believe that we can store similar functions in the same module (getters, selected, keyboards, etc.).
 
-The `admin.py` file defines a `register_admin` function, which is used to register event handlers for messages that are
-sent by authorized users (**i.e., users who are listed in the ADMINS configuration setting**).
+These are for the arguments that `Window` takes. Each of them has a slightly different syntax and behavior.
 
-The `register_admin` function takes a `Dispatcher` object as its parameter, and it uses this object to register event
-handlers that respond to different types of messages.
+Splitting by modules allows you to quickly find the function you need, and also allows you to quickly understand what
+the dialog does.
 
-For example, it might register an event handler that responds to commands that are sent by authorized users, such as
-the `/echo` command, which causes the bot to repeat the text of the message back to the user.
+Also, you can benefit from using **GitHub Copilot (AI Assistant)** with this structure, because the suggestions will be
+more relevant since the functions are looking similar.
 
-### `tgbot/handlers/echo.py`
+```
+dialogs
+├── __init__.py
+└── bot_menu
+    ├── __init__.py
+    ├── windows.py
+    ├── getters.py
+    ├── selected.py
+    ├── keyboards.py
+    └── states.py
 
-The `echo.py` file defines a `register_echo` function, which is used to register an event handler for the `/echo`
-command.
-This event handler is responsible for repeating the text of the message back to the user. The `register_echo` function
-takes a `Dispatcher` object as its parameter, and it uses this object to register the `/echo` command handler.
+```
 
-### `tgbot/handlers/user.py`
+## Creating a Dialog
 
-The `user.py` file defines a `register_user` function, which is used to register event handlers for messages that are
-sent
-by non-authorized users (i.e., users who are not listed in the ADMINS configuration setting).
+### Windows: `dialogs/bot_menu/windows.py`
 
-The `register_user` function takes a `Dispatcher` object as its parameter, and it uses this object to register event
-handlers that respond to different types of messages. For example, it might register an event handler that responds to
-commands that are sent by non-authorized users, such as the `/help` command, which causes the bot to send a message with
-a list of available commands.
+```python
+from aiogram_dialog import Window
+from aiogram_dialog.widgets.input import TextInput
+from aiogram_dialog.widgets.kbd import Cancel, Back, Button
+from aiogram_dialog.widgets.text import Format, Const
 
-### `tgbot/middlewares/environment.py`
+from . import keyboards, getters, selected
+from .states import BotMenu, BuyProduct
 
-`environment.py` is a file that contains the `EnvironmentMiddleware` class, which is a middleware used in the Telegram
-bot.
 
-A middleware is a piece of code that sits between the incoming request and the handler function. In this case, the
-`EnvironmentMiddleware` class allows the bot to access the configuration data that was loaded by the `load_config`
-function
-in the `config.py` file. This configuration data can then be accessed by other parts of the bot, such as the handlers,
-to
-customize its behavior.
+def categories_window():
+    return Window(
+        Const('Choose select_products that you`re interested in'),
+        keyboards.paginated_categories(selected.on_chosen_category),
+        Cancel(Const('Exit')),
+        state=BotMenu.select_categories,
+        getter=getters.get_categories
+    )
+```
 
-### `tgbot/keyboards/(inline|reply).py`
+### Keyboard: `dialogs/bot_menu/keyboards.py`
 
-The `inline.py` and `reply.py` files define classes that are used to create inline and reply keyboards, respectively.
+Keyboard is a widget that is used to create a keyboard. For example, `Select` is a button that can be clicked.
+`ScrollingGroup` is a widget that allows you to create a scrolling keyboard (with pagination).
 
-The `InlineKeyboard` class is a subclass of `InlineKeyboardMarkup` from the **aiogram** library, and it defines a
-`__init__` method that takes a `inline_keyboard` parameter, which specifies the buttons that should be included in the
-keyboard.
+```python
+import operator
 
-The `ReplyKeyboard` class is a subclass of `ReplyKeyboardMarkup` from the **aiogram** library, and it defines a
-`__init__` method that takes a `keyboard` parameter, which specifies the buttons that should be included in the
-keyboard.
+from aiogram_dialog.widgets.kbd import Select, ScrollingGroup
+from aiogram_dialog.widgets.text import Format
 
-### `tgbot/misc`
+SCROLLING_HEIGHT = 6
 
-In general, a package called "misc" might be used to store miscellaneous code that doesn't fit into any of the other
-packages or modules in a project. This could include utility functions, helper classes, or other types of code that are
-used by multiple parts of the project.
 
-In this case, the `misc` package contains a `states.py` file, which defines a `StateGroup` class that is used to define
-the states that are used by the bot.
+def paginated_categories(on_click):
+    return ScrollingGroup(
+        Select(
+            Format("{item[0]}"),
+            id="s_scroll_categories",
+            item_id_getter=operator.itemgetter(1),
+            items="categories",
+            on_click=on_click,
+        ),
+        id="category_ids",
+        width=1, height=SCROLLING_HEIGHT,
+    )
+```
 
-### `tgbot/models`
+Here:
 
-The `models` package can contain `users.py` file, which defines a `User` class that is used to represent a user in the
-database. This can be used with combination of some ORM (Object Relational Mapper) to store and retrieve data from the
-database.
+- `Select` is a widget that creates each button
+- `Format` is a widget that allows you to format the text of the button (using the data from the `getter` of the window)
+- `id` is a widget id. It must be unique for each widget in the dialog.
+- `item_id_getter` is a function that is used to get the id of the item.
+  This item_id will be passed to the on_click function in `selected.py`. You can use `operator.itemgetter` to get the id
+  from the tuple, or you can use operator.attrgetter to get the id from the object (if you use a class).
+- `items` argument is a name that is used to get the data from the getter.
+- `on_click` is a function that is called when the button is clicked. It is used to change the state of the dialog.
 
-### `tgbot/services`
+### Getters: `dialogs/bot_menu/getters.py`
 
-This package can also be named `infrastructure`. It contains the code that is used to interact with external services.
+You need getter functions to get data from the database or other sources and to pass it to the dialog.
 
-A package called "services" could contain code that defines services that are used by an application. In software
-development, a service is a self-contained piece of functionality that performs a specific task or provides a specific
-capability. A service is typically defined as a class or a set of functions that implement the desired functionality.
+Getters always accept `dialog_manager: DialogManager` as the first argument and middleware data as keyword arguments.
+You can either get them explicitly or use `**kwargs` to get them all. I use `middleware_data` instead of `kwargs` to
+make it more clear.
 
-Examples of services that might be included in a services package could include a **database access service, a caching
-service, a messaging service**, or any other type of functionality that is used by the application. The exact contents
-of
-a services package would depend on the specific needs of the application and the services that it requires.
+```python
+from aiogram_dialog import DialogManager
 
-The `services` package can contain a `database.py` file, which defines a `Database` class that is used to connect to the
-database and perform database operations.
+from tgbot.services.repo import Repo
 
-## docker-compose.yml
-The `docker-compose.yml` file defines the services that are used by the application, as well as the networks and volumes
-that are needed by the application. The file begins by specifying the version of the Docker Compose file format that is
-being used.
 
-The `services` section of the file defines the containers that should be run as part of the application. In this example,
-there is only one service, called `bot`, which is based on the `tg_bot-image` Docker image. The `container_name` specifies the
-name that should be used for the container, and the `build` section specifies the location of the Dockerfile that should
-be used to build the image.
+async def get_categories(dialog_manager: DialogManager, **middleware_data):
+    session = middleware_data.get('session')
+    repo: Repo = middleware_data.get('repo')
+    db_categories = await repo.get_categories(session)
 
-The `working_dir` specifies the working directory that should be used by the container, and the `volumes` section specifies
-the files and directories that should be mounted into the container. In this case, the entire project directory is
-mounted into the container, which allows the application to access the files on the host machine.
+    data = {
+        # 'categories': db_categories
+        'categories': [
+            (category.name, category.category_id)
+            for category in db_categories
+        ],
+    }
+    return data
+```
 
-The `command` specifies the command that should be run when the container is started, and the `restart` setting specifies
-that the container should be automatically restarted if it exits. 
+### States: `dialogs/bot_menu/states.py`
 
-The `env_file` setting specifies the location of the `.env` file, which contains the configuration settings for the application.
+You need states to be able to switch between windows, each window must have its own unique state with unique name.
 
-The `networks` section defines the networks that the container should be connected to. In this example, there is only one
-network, called `tg_bot`, which is based on the bridge driver. This network allows the containers in the application to
-communicate with each other.
+```python
+from aiogram.dispatcher.filters.state import StatesGroup, State
 
-## Dockerfile
-The `Dockerfile` defines the instructions for building the Docker image that is used by the bot service. The file begins
-by specifying the base image that should be used for the image, which in this case is `python:3.9-buster`. The `ENV`
-instruction sets the value of the `BOT_NAME` environment variable, which is used by the `WORKDIR` instruction to specify the
-working directory for the container.
 
-The `COPY` instructions are used to copy the `requirements.txt` file and the entire project directory into the image. The
-`RUN` instruction is used to install the Python dependencies from the `requirements.txt` file. This allows the application
-to run in the container with all the necessary dependencies.
+class BotMenu(StatesGroup):
+    select_categories = State()
+    select_products = State()
+    product_info = State()
+
+
+class BuyProduct(StatesGroup):
+    enter_amount = State()
+    confirm = State()
+```
+
+### Selected: `dialogs/bot_menu/selected.py`
+
+You need `selected` to store functions that will be called when the user presses buttons (`on_click` callbacks).
+Each function accepts `event: [Event], widget: Any, manager: DialogManager`.
+Some of them also accept other params, depending on the widget.
+
+- `event` - event that triggered the callback, for example, `CallbackQuery` or `Message`
+- `widget` - widget that triggered the callback, for example, `Button` or `TextInput`
+- `manager` - dialog manager, you can use it to switch windows, get data, etc.
+
+```python
+from typing import Any
+
+from aiogram.types import CallbackQuery
+from aiogram_dialog import DialogManager
+
+from tgbot.dialogs.bot_menu.states import BotMenu
+
+
+# Example for a Select widget. Also, item_id is passed as a parameter.
+async def on_chosen_category(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
+    ctx = manager.current_context()
+    ctx.dialog_data.update(category_id=item_id)
+    await manager.switch_to(BotMenu.select_products)
+```
+
+Here:
+- `manager.current_context()` - returns the current context of the dialog. You can use it to get the data from the
+  current dialog. Each dialog has its own context and data.
+- `ctx.dialog_data.update(category_id=item_id)` - updates the data in the context. You can use it to pass data to the
+  next window.
+- `await manager.switch_to(BotMenu.select_products)` - switches to another window.
