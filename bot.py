@@ -41,7 +41,7 @@ async def main():
     dp = Dispatcher(bot, storage=storage)
 
     bot['config'] = config
-    with open('tgbot/misc/test_data.json', 'r') as f:
+    with open('tgbot/misc/test_data.json', 'r', encoding='utf-8') as f:
         repo = Repo(test_data=json.load(f))
 
     register_all_middlewares(dp, config, repo)

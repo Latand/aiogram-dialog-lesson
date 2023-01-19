@@ -62,7 +62,7 @@ In Stock: {product.stock} pcs'''),
 
 def confirm_buy_window():
     return Window(
-        Format('''You want to buy {product.name} for {product.price}$
+        Format('''You want to buy {quantity} {product.name} for {total_amount}$
 Is it correct?'''),
         Button(Const('Yes'),
                'confirm_buy',

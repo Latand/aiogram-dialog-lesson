@@ -55,11 +55,14 @@ async def get_product_info(dialog_manager: DialogManager, **middleware_data):
 
 async def get_product(dialog_manager: DialogManager, **middleware_data):
     session = middleware_data.get('session')
-    product_id = int(dialog_manager.current_context().start_data['product_id'])
+    context = dialog_manager.current_context()
+    product_id = int(context.start_data['product_id'])
     repo: Repo = middleware_data.get('repo')
     db_product = await repo.get_product(session, product_id)
-
+    quantity = context.dialog_data.get('quantity')
     data = {
         'product': db_product,
+        'total_amount': int(quantity) * db_product.price if quantity else None,
+        'quantity': quantity,
     }
     return data
